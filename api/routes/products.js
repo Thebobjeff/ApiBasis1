@@ -50,16 +50,22 @@ router.get("/:id", (request, response, next) => {
 
 router.patch("/:id", (request, response, next) => {
   const ids = request.params.id;
-  if (ids) {
-    response.status(200).json({
-      message: "updated producted",
-      ids: ids,
-    });
-  } else {
-    response.status(200).json({
-      message: "fail",
-    });
+  const updateOps = {};
+  for (const ops of request.body) {
+    updateOps[ops.propName] = ops.value;
   }
+  Product.updateOne({ _id: ids }, { $set: updateOps })
+    .exec()
+    .then((doc) => {
+      console.log(doc);
+      response.status(200).json({
+        message: `updated product Id ${ids}`,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      response.status(500).json({ error: err });
+    });
 });
 
 router.delete("/:id", (request, response, next) => {
