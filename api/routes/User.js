@@ -3,8 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const mango = require("mongoose");
 const User = require("../models/user");
-
-router.get();
+const Jwt = require("jsonwebtoken");
 
 router.post("/signup", (request, response, next) => {
   User.find({ email: request.body.email })
@@ -49,6 +48,28 @@ router.post("/login", (req, response, next) => {
     .then((acc) => {
       if (acc.length < 1) {
         return response.status(401).json({ message: "login Failed" });
+      } else {
+        bcrypt.compare(req.body.password, acc[0].password, (err, reply) => {
+          if (err) {
+            return response.status(401).json({ message: "login Failed" });
+          } else if (reply) {
+            const token = Jwt.sign(
+              {
+                email: acc[0].email,
+                password: acc[0]._id,
+              },
+              process.env.JWT_Key,
+              {
+                expiresIn: "1hr",
+              }
+            );
+            return response
+              .status(201)
+              .json({ message: "Auth Passed", token: token });
+          } else {
+            return response.status(401).json({ message: "login Failed" });
+          }
+        });
       }
     })
     .catch((err) => {

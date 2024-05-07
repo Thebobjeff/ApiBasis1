@@ -1,5 +1,6 @@
 {
   "env": {
-    "MONGO_ATLAS_PW": "KLcQlBwxTMVTlKmW"
+    "MONGO_ATLAS_PW": "KLcQlBwxTMVTlKmW",
+    "JWT_Key": "Password101"
   }
 }

@@ -8,7 +8,7 @@ const userRotutes = require("./api/routes/User");
 const productsRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
 
-mango.connect(`mongodb://localhost:27017/?authMechanism=DEFAULT`);
+mango.connect(`mongodb://localhost:27017`);
 
 app.use(morgan("dev")); /// allows for auto server reloadss
 app.use(body.urlencoded({ extended: false }));
