@@ -34,8 +34,9 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-  Product.findById(req.body.productId)
+  Product.findById(req.body.product)
     .then((prod) => {
+      console.log(req.body.product);
       if (!prod) {
         return res.status(404).json({
           message: "Product not Found",
@@ -43,14 +44,14 @@ router.post("/", (req, res, next) => {
       }
       const order = new Orders({
         _id: new mango.Types.ObjectId(),
-        product: req.body.productId,
+        product: req.body.product,
         total: req.body.total,
       });
       return order.save();
     })
     .then((doc) => {
       console.log(doc);
-      res.status(201).json(doc);
+      res.status(200).json(doc);
     })
     .catch((err) => {
       console.log(err);

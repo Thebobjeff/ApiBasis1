@@ -4,14 +4,13 @@ const mango = require("mongoose");
 const morgan = require("morgan");
 const body = require("body-parser");
 
+const userRotutes = require("./api/routes/User");
 const productsRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
 
-mango.connect(
-  `mongodb+srv://devon2575:${process.env.MONGO_ATLAS_PW}@cluster0.aowooxq.mongodb.net/`
-);
+mango.connect(`mongodb://localhost:27017/?authMechanism=DEFAULT`);
 
-app.use(morgan("dev")); /// allows for auto server reloads
+app.use(morgan("dev")); /// allows for auto server reloadss
 app.use(body.urlencoded({ extended: false }));
 app.use(body.json());
 
@@ -28,6 +27,7 @@ app.use((req, res, next) => {
 // middle ware
 app.use("/products", productsRoutes);
 app.use("/orders", orderRoutes);
+app.use("/user", userRotutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not Found");
