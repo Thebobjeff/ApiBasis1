@@ -5,10 +5,24 @@ const Product = require("../models/product");
 
 router.get("/", (request, response, next) => {
   Product.find()
+    .select("name price _id")
     .exec()
     .then((doc) => {
-      console.log(doc);
-      response.status(200).json(doc);
+      const data = {
+        Length: doc.length,
+        Products: doc.map((items) => {
+          return {
+            name: items.name,
+            price: items.price,
+            _id: items.id,
+            reply: {
+              type: "Get",
+              Url: "http://localhost:4321/products/" + items._id,
+            },
+          };
+        }),
+      };
+      response.status(200).json(data);
     })
     .catch((err) => {
       console.log(err);
@@ -29,14 +43,24 @@ router.post("/", (request, response, next) => {
     })
     .catch((err) => console.log(err));
   response.status(201).json({
-    message: "handling postt request",
-    CreatedProduct: product,
+    message: "Posted",
+    CreatedProduct: {
+      name: product.name,
+      price: product.price,
+      _id: product._id,
+      reply: {
+        type: "Post",
+        url: `http://localhost:4321/products/${product._id}`,
+      },
+    },
   });
 });
 
 router.get("/:id", (request, response, next) => {
   const ids = request.params.id;
+
   Product.findById(ids)
+    .select(" name price _id")
     .exec()
     .then((doc) => {
       console.log(doc);
@@ -59,7 +83,11 @@ router.patch("/:id", (request, response, next) => {
     .then((doc) => {
       console.log(doc);
       response.status(200).json({
-        message: `updated product Id ${ids}`,
+        message: `updated product with ID: ${ids}`,
+        reply: {
+          type: "GET",
+          url: `http://localhost:4321/products/${ids}`,
+        },
       });
     })
     .catch((err) => {
