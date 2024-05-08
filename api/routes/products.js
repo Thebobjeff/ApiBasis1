@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const checkAuth = require("../middlewear/check-auth");
 const productscon = require("../controllers/products");
-const mongo = require("mongoose");
-const Product = require("../models/product");
 
 router.get("/", productscon.get_all_products);
 
