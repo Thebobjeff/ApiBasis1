@@ -2,11 +2,6 @@ const express = require("express");
 const router = express.Router();
 const checkAuth = require("../middlewear/check-auth");
 const orderscon = require("../controllers/allorders");
-const mango = require("mongoose");
-
-const Orders = require("../models/order");
-
-const Product = require("../models/product");
 
 router.get("/", orderscon.orders_get_all);
 
