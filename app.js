@@ -8,14 +8,14 @@ const userRotutes = require("./api/routes/User");
 const productsRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
 
-mango.connect(<mongodb_connection_string>);
+mango.connect(`mongodb://localhost:27017`);
 
 app.use(morgan("dev")); /// allows for auto server reloadss
 app.use(body.urlencoded({ extended: false }));
 app.use(body.json());
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Orgin", "*");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "*");
   if (req.method == "OPTIONS") {
     res.header("Access-Control-Method", "PUT, POST, PATCH, DELETE, GET");

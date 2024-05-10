@@ -63,7 +63,7 @@ exports.loggin_user = (req, response, next) => {
             );
             return response
               .status(201)
-              .json({ message: "Auth Passed", token: token });
+              .json({ message: "Auth Passed", Expites: "1 HR", token: token });
           } else {
             return response.status(401).json({ message: "login Failed" });
           }
